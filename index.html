@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Combat | Gestão de Alunos</title>
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#0b0c0f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <section id="loginScreen" class="login-screen">
+    <div class="login-overlay"></div>
+    <form id="loginForm" class="client-login-card">
+      <img src="assets/team-combat-logo.jpg" alt="Team Combat" class="client-login-logo">
+      <div class="eyebrow">TEAM COMBAT</div>
+      <h1>Bem-vindo</h1>
+      <p>Acesse o sistema de gestão da academia.</p>
+      <label>Usuário<input id="loginUser" autocomplete="username" placeholder="Digite seu usuário" required></label>
+      <label>Senha<input id="loginPass" type="password" autocomplete="current-password" placeholder="Digite sua senha" required></label>
+      <div id="loginError" class="login-error"></div>
+      <button class="btn btn-primary login-submit" type="submit">ENTRAR</button>
+      <small>Use <strong>professor</strong> para gestão da academia ou <strong>admin</strong> para comissões.</small>
+    </form>
+  </section>
+  <div id="app" class="app">
+    <aside class="sidebar">
+      <div class="brand-wrap">
+        <img src="assets/team-combat-logo.jpg" alt="Team Combat" class="brand-logo" />
+        <div><strong>TEAM COMBAT</strong><span>Muay Thai</span></div>
+      </div>
+      <nav id="nav">
+        <button data-view="dashboard" class="nav-item active">◈ <span>Dashboard</span></button>
+        <button data-view="agenda" class="nav-item">◷ <span>Agenda</span></button>
+        <button data-view="students" class="nav-item">◎ <span>Alunos</span></button>
+        <button data-view="classes" class="nav-item">▦ <span>Horários</span></button>
+        <button data-view="attendance" class="nav-item">✓ <span>Presença</span></button>
+        <button data-view="history" class="nav-item">⌛ <span>Histórico</span></button>
+      </nav>
+
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <button id="menuBtn" class="menu-btn">☰</button>
+          <span class="today" id="todayLabel"></span>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-ghost" id="quickBookBtn">+ Definir sala</button>
+          <button class="btn btn-ghost" id="logoutBtn">Sair</button><div class="avatar">TC</div>
+        </div>
+      </header>
+
+      <section id="dashboard" class="view active-view">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">DISCIPLINA • FOCO • RESPEITO • SUPERAÇÃO</div>
+            <h2>Visão geral da academia</h2>
+            <p>Acompanhe os treinos do dia e saiba exatamente quem vem em cada horário.</p>
+          </div>
+          <img src="assets/team-combat-logo.jpg" alt="Team Combat" />
+        </div>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-head"><div><h3>Treinos de hoje</h3><p>Ocupação por horário</p></div><button class="text-btn" data-go="agenda">Ver agenda</button></div>
+            <div id="todayClasses" class="class-list"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div><h3>Próximos alunos</h3><p>Agendamentos confirmados</p></div></div>
+            <div id="nextStudents" class="mini-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="agenda" class="view">
+        <div class="page-head"><div><h2>Agenda de Treinos</h2><p>Veja os alunos que pertencem a cada sala nos dias recorrentes da semana.</p></div><button class="btn btn-primary" id="newBookingBtn">+ Definir sala</button></div>
+        <div class="toolbar">
+          <label>Data<input type="date" id="agendaDate"></label>
+          <label>Buscar aluno<input type="search" id="agendaSearch" placeholder="Digite um nome"></label>
+        </div>
+        <div id="agendaBoard" class="agenda-board"></div>
+      </section>
+
+      <section id="students" class="view">
+        <div class="page-head"><div><h2>Alunos</h2><p>Cadastre e acompanhe os alunos da academia. No campo Pagamento, o professor pode clicar em “Marcar pago” para liberar o aluno nas aulas do mês.</p></div><button class="btn btn-primary" id="newStudentBtn">+ Novo aluno</button></div>
+        <div class="toolbar"><label>Buscar<input type="search" id="studentSearch" placeholder="Nome ou telefone"></label></div>
+        <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Aluno</th><th>Telefone</th><th>Luta</th><th>Horário fixo</th><th>Plano</th><th>Valor mensal</th><th>Pagamento</th><th>Status</th><th>Treinos</th><th>Faltas</th><th></th></tr></thead><tbody id="studentsTable"></tbody></table></div></div>
+      </section>
+
+      <section id="classes" class="view">
+        <div class="page-head"><div><h2>Horários</h2><p>Gerencie as salas e os alunos fixos. Alunos inadimplentes permanecem vinculados à sala, mas ficam bloqueados da agenda e presença até o pagamento. Ao remover um aluno, ele continua cadastrado e fica sem horário.</p></div><button class="btn btn-primary" id="newClassBtn">+ Novo grupo</button></div>
+        <div id="classesGrid" class="cards-grid"></div>
+      </section>
+
+      <section id="attendance" class="view">
+        <div class="page-head"><div><h2>Controle de Presença</h2><p>Marque presença, falta ou cancelamento.</p></div></div>
+        <div class="toolbar"><label>Data<input type="date" id="attendanceDate"></label></div>
+        <div id="attendanceList" class="attendance-list"></div>
+      </section>
+
+      <section id="history" class="view">
+        <div class="page-head"><div><h2>Histórico</h2><p>Histórico geral e individual de presenças, faltas e cancelamentos.</p></div></div>
+        <div class="toolbar history-toolbar">
+          <label>Buscar aluno<input type="search" id="historySearch" placeholder="Digite o nome do aluno"></label>
+          <label>Histórico por aluno<select id="historyStudent"><option value="">Todos os alunos</option></select></label>
+        </div>
+        <div class="stats-grid history-stats" id="historyStats"></div>
+        <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Data</th><th>Horário</th><th>Aluno</th><th>Luta</th><th>Resultado</th><th>Registrado em</th></tr></thead><tbody id="historyTable"></tbody></table></div></div>
+        <div class="rule-note"><strong>Regra automática:</strong> o aluno pode ser agendado até 15 minutos após o início da aula. Se não houver presença ou cancelamento registrado até 30 minutos após o início, o sistema registra falta automaticamente, remove o agendamento da lista ativa e mantém o registro no histórico.</div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="modal">
+    <form method="dialog" class="modal-card" id="modalForm">
+      <div class="modal-head"><div><div class="eyebrow">TEAM COMBAT</div><h3 id="modalTitle">Novo</h3></div><button class="icon-btn" value="cancel">×</button></div>
+      <div id="modalBody"></div>
+      <div class="modal-actions"><button type="button" class="btn btn-ghost" id="cancelModal">Cancelar</button><button type="submit" class="btn whatsapp-btn hidden" id="saveWhatsAppStudent">Salvar e enviar WhatsApp</button><button type="submit" class="btn btn-primary" id="saveModal">Salvar</button></div>
+    </form>
+  </dialog>
+
+
+  <section id="commissionAdmin" class="admin-commission hidden">
+    <header class="admin-topbar">
+      <div class="brand-wrap admin-brand"><img src="assets/team-combat-logo.jpg" alt="Team Combat" class="brand-logo"><div><strong>TEAM COMBAT</strong><span>Comissões administrativas</span></div></div>
+      <button class="btn btn-ghost" id="adminLogoutBtn">Sair</button>
+    </header>
+    <main class="admin-main">
+      <div class="page-head"><div><div class="eyebrow">ACESSO ADMINISTRATIVO</div><h2>Comissões</h2><p>Controle exclusivo da comissão de 10% sobre o período pago: 1 mês no Mensal, 3 meses no Trimestral e 6 meses no Semestral.</p></div><button class="btn btn-primary" id="settleAllBtn">Zerar todas as comissões</button></div>
+      <div class="stats-grid" id="commissionStats"></div>
+      <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Aluno</th><th>Valor do período</th><th>10%</th><th>Ciclo iniciado</th><th>Registrado em</th><th>Status</th><th></th></tr></thead><tbody id="commissionTable"></tbody></table></div></div>
+      <div class="rule-note"><strong>Regra:</strong> o professor marca o plano como pago para liberar o aluno. O sistema calcula automaticamente 10% sobre 1 mês no plano Mensal, 3 meses no Trimestral e 6 meses no Semestral, avançando o vencimento pelo mesmo período. Somente este acesso administrativo pode zerar uma comissão depois que ela for recebida.</div>
+    </main>
+  </section>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

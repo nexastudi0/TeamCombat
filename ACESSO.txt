@@ -1,0 +1,12 @@
+TEAM COMBAT - ACESSOS PROVISÓRIOS
+
+PROFESSOR / GESTÃO DA ACADEMIA
+Usuário: professor
+Senha: 1234
+
+ADMINISTRATIVO / COMISSÕES
+Usuário: admin
+Senha: 1234
+
+A comissão é calculada em 10% do valor da mensalidade cadastrada.
+Somente o acesso admin pode zerar as comissões.
